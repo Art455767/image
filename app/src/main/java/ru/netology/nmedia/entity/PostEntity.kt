@@ -17,15 +17,27 @@ data class PostEntity(
     val published: Long,
     val likedByMe: Boolean,
     val likes: Int = 0,
+
     @Embedded
     var attachment: AttachmentEmbeddable?,
 ) {
-    fun toDto() = Post(id, author, authorAvatar, content, published, likedByMe, likes, attachment?.toDto())
+    fun toDto() = Post(
+        id, author, authorAvatar, content, published, likedByMe, likes, attachment?.toDto(),
+        imageUrl = TODO()
+    )
 
     companion object {
         fun fromDto(dto: Post) =
-            PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likedByMe, dto.likes, AttachmentEmbeddable.fromDto(dto.attachment))
-
+            PostEntity(
+                dto.id,
+                dto.author,
+                dto.authorAvatar,
+                dto.content,
+                dto.published,
+                dto.likedByMe,
+                dto.likes,
+                dto.attachment?.let { AttachmentEmbeddable.fromDto(it) } // Обрабатываем возможное значение null
+            )
     }
 }
 
@@ -36,12 +48,12 @@ data class AttachmentEmbeddable(
     fun toDto() = Attachment(url, type)
 
     companion object {
-        fun fromDto(dto: Attachment?) = dto?.let {
-            AttachmentEmbeddable(it.url, it.type)
+        fun fromDto(dto: Attachment): AttachmentEmbeddable {
+            return AttachmentEmbeddable(dto.url, dto.type) // Здесь мы принимаем Attachment
         }
     }
 }
 
-
+// Расширения для преобразования списков
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

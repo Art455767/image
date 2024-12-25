@@ -25,7 +25,9 @@ private val empty = Post(
     authorAvatar = "",
     likedByMe = false,
     likes = 0,
-    published = 0
+    published = 0,
+    attachment = null,
+    imageUrl = "",
 )
 
 private val noPhoto = PhotoModel()
