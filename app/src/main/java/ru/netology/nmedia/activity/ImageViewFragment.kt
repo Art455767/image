@@ -29,8 +29,10 @@ class ImageViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val imageUrl = arguments?.getString(ARG_IMAGE_URL)?.let { "http://10.0.2.2:9999/media/$it" } ?: return
+        val imageUrl = arguments?.getString(ARG_IMAGE_URL) ?: run {
+            Toast.makeText(requireContext(), "Ошибка: изображение недоступно", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         Glide.with(this)
             .load(imageUrl)

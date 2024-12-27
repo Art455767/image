@@ -4,6 +4,7 @@ import android.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,11 @@ class PostViewHolder(
             like.text = "${post.likes}"
 
             imageView.setOnClickListener {
-                onInteractionListener.onImageClick(post.imageUrl)
+                if (post.imageUrl.isNullOrEmpty()) {
+                    Toast.makeText(binding.root.context, "Изображение недоступно", Toast.LENGTH_SHORT).show()
+                } else {
+                    onInteractionListener.onImageClick(post.imageUrl)
+                }
             }
 
             menu.setOnClickListener {

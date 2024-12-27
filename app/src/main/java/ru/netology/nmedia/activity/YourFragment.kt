@@ -8,7 +8,8 @@ import ru.netology.nmedia.ui.ImageViewFragment
 
 class YourFragment : Fragment(), OnInteractionListener {
     override fun onImageClick(imageUrl: String) {
-        val imageViewFragment = ImageViewFragment.newInstance(imageUrl)
+        val fullImageUrl = "http://10.0.2.2:9999/media/$imageUrl"
+        val imageViewFragment = ImageViewFragment.newInstance(fullImageUrl)
         parentFragmentManager.beginTransaction()
             .replace(R.id.container, imageViewFragment)
             .addToBackStack(null)
