@@ -20,11 +20,14 @@ data class PostEntity(
 
     @Embedded
     var attachment: AttachmentEmbeddable?,
+    val imageUrl: String?,
 ) {
-    fun toDto() = Post(
-        id, author, authorAvatar, content, published, likedByMe, likes, attachment?.toDto(),
-        imageUrl = TODO()
-    )
+    fun toDto(): Post {
+        return Post(
+            id, author, authorAvatar, content, published, likedByMe, likes, attachment?.toDto(),
+            imageUrl = imageUrl ?: ""
+        )
+    }
 
     companion object {
         fun fromDto(dto: Post) =
@@ -36,7 +39,8 @@ data class PostEntity(
                 dto.published,
                 dto.likedByMe,
                 dto.likes,
-                dto.attachment?.let { AttachmentEmbeddable.fromDto(it) } // Обрабатываем возможное значение null
+                dto.attachment?.let { AttachmentEmbeddable.fromDto(it) },
+                dto.imageUrl
             )
     }
 }
@@ -49,11 +53,10 @@ data class AttachmentEmbeddable(
 
     companion object {
         fun fromDto(dto: Attachment): AttachmentEmbeddable {
-            return AttachmentEmbeddable(dto.url, dto.type) // Здесь мы принимаем Attachment
+            return AttachmentEmbeddable(dto.url, dto.type)
         }
     }
 }
 
-// Расширения для преобразования списков
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
 fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

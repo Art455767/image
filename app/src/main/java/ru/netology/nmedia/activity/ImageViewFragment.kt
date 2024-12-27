@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import ru.netology.nmedia.R
+import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.databinding.FragmentImageViewBinding
 
 
@@ -26,7 +30,7 @@ class ImageViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val imageUrl = arguments?.getString(ARG_IMAGE_URL) ?: return
+        val imageUrl = arguments?.getString(ARG_IMAGE_URL)?.let { "http://10.0.2.2:9999/media/$it" } ?: return
 
         Glide.with(this)
             .load(imageUrl)
